@@ -17,6 +17,7 @@
   <ItemGroup>
     <Folder Include="Views\" />
     <Folder Include="Views\Controls\" />
+    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="MainPage.xaml" />
