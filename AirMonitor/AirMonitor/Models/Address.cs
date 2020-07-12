@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace AirMonitor.Models
 {
@@ -11,6 +12,7 @@ namespace AirMonitor.Models
         public string DisplayAddress1 { get; set; }
         public string DisplayAddress2 { get; set; }
 
+        [JsonIgnore]
         public string Description => $"{Street} {Number}, {City}";
     }
 }

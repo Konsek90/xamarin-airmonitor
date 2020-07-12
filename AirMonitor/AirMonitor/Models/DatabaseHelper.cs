@@ -15,9 +15,9 @@ namespace AirMonitor.Helpers
 
         public void Initialize()
         {
-            string databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AirMonitorDatabase.db");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AirMonitorDatabase.db");
 
-            db = new SQLiteConnection(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
+            db = new SQLiteConnection(path, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex);
 
             db.CreateTable<InstallationEntity>();
             db.CreateTable<MeasurementEntity>();
@@ -29,16 +29,15 @@ namespace AirMonitor.Helpers
 
         public void SaveInstallations(IEnumerable<Installation> installations)
         {
-            IEnumerable<InstallationEntity> entities = installations.Select(installation => new InstallationEntity(installation));
+            var entries = installations.Select(installation => new InstallationEntity(installation));
 
             db.DeleteAll<InstallationEntity>();
-            db.InsertAll(entities);
+            db.InsertAll(entries);
         }
 
         public IEnumerable<Installation> GetInstallations()
         {
-            IEnumerable<Installation> installations = db.Table<InstallationEntity>().Select(entity => new Installation(entity));
-
+            IEnumerable<Installation> installations = db.Table<InstallationEntity>().Select(installation => new Installation(installation));
             return installations;
         }
 
@@ -56,10 +55,10 @@ namespace AirMonitor.Helpers
                 db.InsertAll(measurement.Current.Indexes);
                 db.InsertAll(measurement.Current.Standards);
 
-                MeasurementItemEntity measurementItemEntity = new MeasurementItemEntity(measurement.Current);
+                var measurementItemEntity = new MeasurementItemEntity(measurement.Current);
                 db.Insert(measurementItemEntity);
 
-                MeasurementEntity measurementEntity = new MeasurementEntity(measurementItemEntity.Id, measurement.Installation.Id);
+                var measurementEntity = new MeasurementEntity(measurementItemEntity.Id, measurement.Installation.Id);
                 db.Insert(measurementEntity);
             }
         }
@@ -68,8 +67,8 @@ namespace AirMonitor.Helpers
         {
             return db.Table<MeasurementEntity>().Select(s =>
             {
-                var measurementItem = GetMeasurementItem(s.Current);
-                var installation = GetInstallation(s.Installation);
+                var measurementItem = GetMeasurementItem(s.CurrentMeasurementItemId);
+                var installation = GetInstallation(s.InstallationId);
                 return new Measurement(measurementItem, installation);
             });
         }
@@ -92,7 +91,9 @@ namespace AirMonitor.Helpers
             return new Installation(entity);
         }
 
-        private bool disposedValue = false;
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
@@ -108,9 +109,13 @@ namespace AirMonitor.Helpers
             }
         }
 
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
         }
+
+        #endregion IDisposable Support
     }
 }

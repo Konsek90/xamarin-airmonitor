@@ -15,17 +15,16 @@ namespace AirMonitor.Models.Tables
             if (installation == null) return;
 
             Id = installation.Id;
-            Location = JsonConvert.SerializeObject(installation.Location);
-            Address = JsonConvert.SerializeObject(installation.Address);
+            LocationString = JsonConvert.SerializeObject(installation.Location);
+            AddressString = JsonConvert.SerializeObject(installation.Address);
             Elevation = installation.Elevation;
             IsAirlyInstallation = installation.IsAirlyInstallation;
         }
 
         [PrimaryKey]
         public string Id { get; set; }
-
-        public string Location { get; set; }
-        public string Address { get; set; }
+        public string LocationString { get; set; }
+        public string AddressString { get; set; }
         public double Elevation { get; set; }
         public bool IsAirlyInstallation { get; set; }
     }

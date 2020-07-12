@@ -25,7 +25,6 @@ namespace AirMonitor.Models.Tables
 
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-
         public DateTime FromDateTime { get; set; }
         public DateTime TillDateTime { get; set; }
         public string MeasurementValueIds { get; set; }

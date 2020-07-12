@@ -10,16 +10,15 @@ namespace AirMonitor.Models.Tables
         {
         }
 
-        public MeasurementEntity(int current, string installation)
+        public MeasurementEntity(int currentMeasurementItemId, string installationId)
         {
-            Current = current;
-            Installation = installation;
+            CurrentMeasurementItemId = currentMeasurementItemId;
+            InstallationId = installationId;
         }
 
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-
-        public int Current { get; set; }
-        public string Installation { get; set; }
+        public int CurrentMeasurementItemId { get; set; }
+        public string InstallationId { get; set; }
     }
 }
