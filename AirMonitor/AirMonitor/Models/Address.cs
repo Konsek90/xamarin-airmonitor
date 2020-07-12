@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace AirMonitor.Models
 {
     public struct Address
